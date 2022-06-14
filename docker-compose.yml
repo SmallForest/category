@@ -1,0 +1,17 @@
+version: "3"
+
+networks:
+  jll:
+
+services:     
+  php:
+    build: .
+    restart: always
+    privileged: true
+    networks:
+      - jll
+    volumes:
+      - ./:/usr/share/nginx/html
+      - ./php:/usr/local/etc
+    environment:
+      - TZ=Asia/Shanghai 
