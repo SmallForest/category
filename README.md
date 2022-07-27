@@ -10,3 +10,4 @@ CREATE TABLE `category_optimization` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
+获取所有子级数量时使用了前缀索引，提高获取所有子级的速度。
