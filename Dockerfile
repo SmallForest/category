@@ -27,3 +27,4 @@ RUN apt-get install -y wget
 # 安装composer
 RUN cd /tmp && wget https://install.phpcomposer.com/installer && mv installer a.php && php a.php && rm a.php && mv composer.phar /usr/local/bin/composer
 
+WORKDIR /usr/share/nginx/html

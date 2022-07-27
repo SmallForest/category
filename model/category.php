@@ -45,7 +45,7 @@ class category extends Model
         //获取pid
         $pid = $this->getPID($id);
         //获取pid的LevelStr,并和当前的str拼接一起返回
-        return $str . $this->getLevelStr($pid);
+        return $this->getLevelStr($pid) . $str;
     }
 
     /**
@@ -155,8 +155,11 @@ class category extends Model
      */
     public function getSonCount(int $id): int
     {
-        //原理：level_str格式比如是L4L3L1 所以可以用like统计数量
-        return $this->where([['level_str', 'like', '%L' . $id . '|%']])->where('is_delete', 0)->count('id') - 1;
+        //SELECT count(id) from `level` where level_str like 'L1|%';
+        //利用左索引，like可以走索引，否则GG
+        //原理：level_str格式比如是L1|L2|L3| 所以可以用like统计数量
+        $pStr = $this->getLevelStr($id);
+        return $this->where([['level_str', 'like', $pStr . '%']])->where('is_delete', 0)->count('id') - 1;
     }
 
     /**
