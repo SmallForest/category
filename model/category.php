@@ -116,10 +116,8 @@ class category extends Model
         $this->where('id', $id)->update(['pid' => $pid]);
         //step 2 获取原来的level_str
         $oldStr = $this->getLevelStr($id);
-        var_dump($oldStr);
         //step 3 切换了父级id之后需要获取新的level_str
         $newStr = $this->createLevelStr($id);
-        var_dump($newStr);
         if ($oldStr != $newStr) {
             //step 4 更新level_str
             $this->where('id', $id)->update(['level_str' => $newStr]);
