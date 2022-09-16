@@ -49,7 +49,7 @@ var_dump($id);
 //删除id=1所有子级
 $category->deleteSons(1);
 //将id=6的所有子级都挪动到1下面
-$category->changePid(7,1);
+$category->changePid(6,1);
 //获取id=1的所有子级的数量
 $count = $category->getSonCount(1);
 var_dump($count);

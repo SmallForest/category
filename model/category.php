@@ -88,12 +88,13 @@ class category extends Model
      * 实现思路就是进行替换
      * @param string $oldStr 变动前的str
      * @param string $newStr 变动后的str
+     * @param int $id 需要忽略的ID
      */
-    private function modifySonLevelStr(string $oldStr, string $newStr)
+    private function modifySonLevelStr(string $oldStr, string $newStr, int $id)
     {
-        //update platform_car_brand_parts set `level_str`=replace(`level_str`,'L4|L1|','L4|') where `level_str` like '%L4|L1|%' and `is_delete`=0 ;
+        //update category_optimization set `level_str`=replace(`level_str`,'L4|L1|','L4|') where `level_str` like '%L4|L1|%' and `is_delete`=0 ;
         $sql = "update `{$this->table}` set `level_str`=replace(`level_str`,'{$oldStr}','{$newStr}') where `level_str` like '%{$oldStr}%' " .
-            "and `is_delete`=0";
+            "and `is_delete`=0 and id <> {$id}";
         Db::execute($sql);
     }
 
@@ -115,13 +116,15 @@ class category extends Model
         $this->where('id', $id)->update(['pid' => $pid]);
         //step 2 获取原来的level_str
         $oldStr = $this->getLevelStr($id);
+        var_dump($oldStr);
         //step 3 切换了父级id之后需要获取新的level_str
         $newStr = $this->createLevelStr($id);
+        var_dump($newStr);
         if ($oldStr != $newStr) {
             //step 4 更新level_str
             $this->where('id', $id)->update(['level_str' => $newStr]);
             //step 5 修改所有子级的level_str
-            $this->modifySonLevelStr($oldStr, $newStr);
+            $this->modifySonLevelStr($oldStr, $newStr, $id);
         }
     }
 
